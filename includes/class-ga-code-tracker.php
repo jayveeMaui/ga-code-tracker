@@ -75,7 +75,6 @@ class Ga_Code_Tracker {
 		$this->plugin_name = 'ga-code-tracker';
 
 		$this->load_dependencies();
-		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
@@ -87,7 +86,6 @@ class Ga_Code_Tracker {
 	 * Include the following files that make up the plugin:
 	 *
 	 * - Ga_Code_Tracker_Loader. Orchestrates the hooks of the plugin.
-	 * - Ga_Code_Tracker_i18n. Defines internationalization functionality.
 	 * - Ga_Code_Tracker_Admin. Defines all hooks for the admin area.
 	 * - Ga_Code_Tracker_Public. Defines all hooks for the public side of the site.
 	 *
@@ -106,12 +104,6 @@ class Ga_Code_Tracker {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-ga-code-tracker-loader.php';
 
 		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-ga-code-tracker-i18n.php';
-
-		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-ga-code-tracker-admin.php';
@@ -126,22 +118,6 @@ class Ga_Code_Tracker {
 
 	}
 
-	/**
-	 * Define the locale for this plugin for internationalization.
-	 *
-	 * Uses the Ga_Code_Tracker_i18n class in order to set the domain and to register the hook
-	 * with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function set_locale() {
-
-		$plugin_i18n = new Ga_Code_Tracker_i18n();
-
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
-	}
 
 	/**
 	 * Register all of the hooks related to the admin area functionality
@@ -155,9 +131,9 @@ class Ga_Code_Tracker {
 		$plugin_admin = new Ga_Code_Tracker_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
-		$plugin_admin->init_ga_code_tracker();
+		//menu items
+		$this->loader->add_action('admin_menu',$plugin_admin,'init_ga_code_tracker');
 
 	}
 
@@ -172,8 +148,8 @@ class Ga_Code_Tracker {
 
 		$plugin_public = new Ga_Code_Tracker_Public( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		//event loader
+		$this->loader->add_action('wp_head',$plugin_public,'init_ga_code_tracker');
 
 	}
 

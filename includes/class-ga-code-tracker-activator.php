@@ -34,10 +34,10 @@ class Ga_Code_Tracker_Activator {
 
 		$table_name = $wpdb->prefix . "ga_code_tracker";
 		$charset_collate = $wpdb->get_charset_collate();
-		$sql = "CREATE TABLE $table_name (
+		$sql = "CREATE TABLE IF NOT EXISTS $table_name (
 				`id` MEDIUMINT NOT NULL AUTO_INCREMENT,
-				`code` varchar(50) CHARACTER SET utf8 NOT NULL,
-				`description` varchar(100) CHARACTER SET utf8 NOT NULL,
+				`code` varchar(100) CHARACTER SET utf8 NOT NULL,
+				`description` varchar(50) CHARACTER SET utf8 NOT NULL,
 				PRIMARY KEY (`id`),
 				CONSTRAINT ga_code_uq UNIQUE (`code`)
 			  ) $charset_collate; ";

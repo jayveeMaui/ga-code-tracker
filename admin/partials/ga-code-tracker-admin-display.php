@@ -13,7 +13,7 @@
  */
 
 function ga_code_tracker_create() {
-    $id = $_POST["code"];
+    $code = $_POST["code"];
     $description = $_POST["description"];
     //insert
     if (isset($_POST['insert'])) {
@@ -22,7 +22,7 @@ function ga_code_tracker_create() {
 
         $wpdb->insert(
                 $table_name, //table
-                array('code' => $id, 'description' => $description), //data
+                array('code' => $code, 'description' => $description), //data
                 array('%s', '%s') //data format			
         );
         $message.="GA code tracker has been inserted!";
@@ -36,11 +36,11 @@ function ga_code_tracker_create() {
             <table class='wp-list-table widefat fixed'>
                 <tr>
                     <th class="ss-th-width">Code</th>
-                    <td><input type="text" name="code" value="<?php echo $id; ?>" class="ss-field-width" /></td>
+                    <td><input type="text" name="code" value="<?php echo $code; ?>" class="ss-field-width" /></td>
                 </tr>
                 <tr>
                     <th class="ss-th-width">Description</th>
-                    <td><input type="text" name="description" value="<?php echo $description; ?>" class="ss-field-width" /></td>
+                    <td><input type="text" name="description" value="<?php echo stripslashes($description); ?>" class="ss-field-width" /></td>
                 </tr>
             </table>
             <input type='submit' name="insert" value='Save' class='button'>
@@ -69,13 +69,13 @@ function ga_code_tracker_list() {
             <tr>
                 <th class="manage-column ss-list-width">Code</th>
                 <th class="manage-column ss-list-width">Description</th>
-                <th>&nbsp;</th>
+                <th class="manage-column ss-list-width">&nbsp;</th>
             </tr>
             <?php foreach ($rows as $row) { ?>
                 <tr>
                     <td class="manage-column ss-list-width"><?php echo $row->code; ?></td>
-                    <td class="manage-column ss-list-width"><?php echo $row->description; ?></td>
-                    <td><a href="<?php echo admin_url('admin.php?page=ga_code_tracker_update&id=' . $row->id); ?>">Update</a></td>
+                    <td class="manage-column ss-list-width"><?php echo stripslashes($row->description); ?></td>
+                    <td class="manage-column ss-list-width"><a href="<?php echo admin_url('admin.php?page=ga_code_tracker_update&id=' . $row->id); ?>">Update</a></td>
                 </tr>
             <?php } ?>
         </table>
@@ -124,8 +124,8 @@ function ga_code_tracker_update() {
         <?php } else { ?>
             <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                 <table class='wp-list-table widefat fixed'>
-                    <tr><th>Code</th><td><input type="text" name="code" value="<?php echo $codes->code; ?>"/></td></tr>
-                    <tr><th>Description</th><td><input type="text" name="description" value="<?php echo $codes->description; ?>"/></td></tr>
+                    <tr><th class="manage-column ss-list-width">Code</th><td class="manage-column ss-list-width"><input class="ss-field-width" type="text" name="code" value="<?php echo $codes->code; ?>"/></td></tr>
+                    <tr><th class="manage-column ss-list-width">Description</th><td class="manage-column ss-list-width"><input class="ss-field-width" type="text" name="description" value="<?php echo stripslashes($codes->description); ?>"/></td></tr>
                 </table>
                 <input type='submit' name="update" value='Save' class='button'> &nbsp;&nbsp;
                 <input type='submit' name="delete" value='Delete' class='button' onclick="return confirm('Are you sure?')">

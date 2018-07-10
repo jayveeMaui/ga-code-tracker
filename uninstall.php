@@ -29,3 +29,13 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+
+
+global $wpdb;
+
+
+$unins_ga_table_name = $wpdb->prefix . 'ga_code_tracker';
+
+// drop the table from the database.
+$wpdb->query( "ALTER TABLE $unins_ga_table_name DROP INDEX ga_code_uq");
+$wpdb->query( "DROP TABLE IF EXISTS $unins_ga_table_name" );

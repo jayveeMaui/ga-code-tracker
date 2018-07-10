@@ -54,50 +54,13 @@ class Ga_Code_Tracker_Public {
 
 	}
 
-	/**
-	 * Register the stylesheets for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_styles() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Ga_Code_Tracker_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Ga_Code_Tracker_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/ga-code-tracker-public.css', array(), $this->version, 'all' );
-
-	}
 
 	/**
-	 * Register the JavaScript for the public-facing side of the site.
+	 * This function will handle the event when a download button is click
 	 *
-	 * @since    1.0.0
 	 */
-	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Ga_Code_Tracker_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Ga_Code_Tracker_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/ga-code-tracker-public.js', array( 'jquery' ), $this->version, false );
-
+	public function init_ga_code_tracker(){
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/ga-code-tracker-public-display.php';
 	}
-
 }
